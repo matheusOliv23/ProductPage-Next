@@ -6,5 +6,5 @@ const Button = styled("button", {
 });
 
 export default function index() {
-  return <Button>teste</Button>;
+  return <Button></Button>;
 }
