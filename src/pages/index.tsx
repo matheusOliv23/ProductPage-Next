@@ -6,6 +6,7 @@ import { stripe } from "src/lib/stripe";
 import { GetStaticProps } from "next";
 import Stripe from "stripe";
 import { formatPrice } from "src/utils/formatPrice";
+import Link from "next/link";
 
 interface HomeProps {
   products: {
@@ -26,18 +27,20 @@ export default function Home({ products }: HomeProps) {
   return (
     <HomeContainer ref={sliderRef} className="keen-slider">
       {products.map((product) => (
-        <Product key={product.id} className="keen-slider__slide">
-          <Image
-            alt="Camisetas"
-            width={520}
-            height={480}
-            src={product.imageUrl}
-          />
-          <footer>
-            <strong>{product.name}</strong>
-            <span>{formatPrice(product.price / 100)}</span>
-          </footer>
-        </Product>
+        <Link key={product.id} href={`/product/${product.id}`}>
+          <Product className="keen-slider__slide">
+            <Image
+              alt="Camisetas"
+              width={520}
+              height={480}
+              src={product.imageUrl}
+            />
+            <footer>
+              <strong>{product.name}</strong>
+              <span>{formatPrice(product.price / 100)}</span>
+            </footer>
+          </Product>
+        </Link>
       ))}
     </HomeContainer>
   );
