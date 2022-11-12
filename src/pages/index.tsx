@@ -3,8 +3,9 @@ import { HomeContainer, Product } from "src/styles/pages/home";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { stripe } from "src/lib/stripe";
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import Stripe from "stripe";
+import { formatPrice } from "src/utils/formatPrice";
 
 interface HomeProps {
   products: {
@@ -34,7 +35,7 @@ export default function Home({ products }: HomeProps) {
           />
           <footer>
             <strong>{product.name}</strong>
-            <span>{product.price / 100}</span>
+            <span>{formatPrice(product.price / 100)}</span>
           </footer>
         </Product>
       ))}
@@ -42,7 +43,7 @@ export default function Home({ products }: HomeProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ["data.default_price"],
   });
@@ -60,5 +61,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       products,
     },
+    revalidate: 60 * 60 * 2, // a cada 2 horas
   };
 };
