@@ -1,5 +1,77 @@
+import { GetStaticPaths, GetStaticProps } from "next";
+import Image from "next/image";
 import React from "react";
+import { stripe } from "src/lib/stripe";
+import {
+  ImageContainer,
+  ProductContainer,
+  ProductDetails,
+} from "src/styles/pages/product";
+import { formatPrice } from "src/utils/formatPrice";
+import Stripe from "stripe";
 
-export default function ProductId() {
-  return <div>[id]</div>;
+interface ProductProps {
+  product: {
+    id: string;
+    name: string;
+    imageUrl: string;
+    price: number;
+  };
 }
+
+export default function index({ product }: ProductProps) {
+  return (
+    <ProductContainer>
+      <ImageContainer>
+        <Image
+          alt={`${product.name}`}
+          src={product.imageUrl}
+          height={500}
+          width={600}
+        />
+      </ImageContainer>
+      <ProductDetails>
+        <h1>{product.name}</h1>
+        <span>{formatPrice(product.price / 100)}</span>
+        <p>lorem</p>
+        <button>Comprar agora</button>
+      </ProductDetails>
+    </ProductContainer>
+  );
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const response = await stripe.products.list();
+  const paths = response.data.map((product) => {
+    return {
+      params: { id: product.id.toString() },
+    };
+  });
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
+  params,
+}) => {
+  const productId = params.id;
+
+  const product = await stripe.products.retrieve(productId, {
+    expand: ["default_price"],
+  });
+
+  const price = product.default_price as Stripe.Price;
+  return {
+    props: {
+      product: {
+        id: product.id,
+        name: product.name,
+        imageUrl: product.images[0],
+        price: price.unit_amount,
+      },
+    },
+    revalidate: 60 * 60 * 1,
+  };
+};
