@@ -54,7 +54,7 @@ export default function index({ product }: ProductProps) {
       </ImageContainer>
       <ProductDetails>
         <h1>{product.name}</h1>
-        <span>{formatPrice(product.price / 100)}</span>
+        <span>R$ {formatPrice(product.price / 100)}</span>
         <p>lorem</p>
         <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>
           Comprar agora

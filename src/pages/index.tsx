@@ -37,7 +37,7 @@ export default function Home({ products }: HomeProps) {
             />
             <footer>
               <strong>{product.name}</strong>
-              <span>{formatPrice(product.price / 100)}</span>
+              <span>R${formatPrice(product.price / 100)}</span>
             </footer>
           </Product>
         </Link>
