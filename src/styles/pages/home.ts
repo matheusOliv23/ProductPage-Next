@@ -4,9 +4,10 @@ export const HomeContainer = styled("main", {
   display: "flex",
   // gap: "3rem",
   width: "100%",
-  maxWidth: "calc(100vw - ((100vw - 1180px)/2))",
-  marginLeft: "auto",
-  minHeight: 656,
+  maxWidth: "90vw",
+  margin: "0 auto",
+  // marginLeft: "auto",
+  // minHeight: 656,
 });
 
 export const Product = styled("div", {
@@ -23,6 +24,8 @@ export const Product = styled("div", {
 
   img: {
     objectFit: "cover",
+    backgroundPosition: "center",
+    height: 600,
   },
 
   footer: {

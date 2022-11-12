@@ -18,6 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Header>
         <Image alt="Logo do projeto" width={52} height={52} src={logo} />
         <p>Ecommerce</p>
+        <h1>MODA MASCULINA</h1>
       </Header>
       <Component {...pageProps} />
     </Container>
